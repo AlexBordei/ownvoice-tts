@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "OwnVoice TTS API",
+		"description": "Complete Postman collection for OwnVoice Text-to-Speech API\n\nBase URL: http://nn-voice.icefelix.com\nVersion: 1.0.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Info",
+			"item": [
+				{
+					"name": "Root - Service Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Get basic service information and available endpoints"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check service health status, cache info, and supported languages count"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for service health monitoring and information"
+		},
+		{
+			"name": "Languages & Voices",
+			"item": [
+				{
+					"name": "List Languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/languages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"languages"
+							]
+						},
+						"description": "Get list of all supported languages for TTS synthesis"
+					},
+					"response": []
+				},
+				{
+					"name": "List Voices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/voices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"voices"
+							]
+						},
+						"description": "Get list of all available voices per language"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for discovering supported languages and voices"
+		},
+		{
+			"name": "Text-to-Speech Synthesis",
+			"item": [
+				{
+					"name": "Synthesize Romanian Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Bună ziua! Cum te numești? Mă numesc OwnVoice și sunt un serviciu de sinteză vocală.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "ro",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize Romanian text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize English Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Hello! How are you today? I am OwnVoice, a text-to-speech service.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "en",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize English text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize Spanish Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "¡Hola! ¿Cómo estás? Me llamo OwnVoice y soy un servicio de síntesis de voz.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "es",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize Spanish text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize French Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Bonjour! Comment allez-vous? Je m'appelle OwnVoice et je suis un service de synthèse vocale.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "fr",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize French text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize German Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Hallo! Wie geht es dir? Ich heiße OwnVoice und bin ein Text-zu-Sprache-Service.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "de",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize German text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize Italian Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Ciao! Come stai? Mi chiamo OwnVoice e sono un servizio di sintesi vocale.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "it",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize Italian text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize Portuguese Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Olá! Como está? Meu nome é OwnVoice e sou um serviço de síntese de voz.",
+									"description": "Text to convert to speech",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "pt",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Synthesize Portuguese text to speech audio (MP3 format)"
+					},
+					"response": []
+				},
+				{
+					"name": "Synthesize Long Romanian Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Acesta este un text mai lung în limba română pentru a testa capacitatea serviciului OwnVoice TTS de a procesa texte extinse. Serviciul nostru folosește tehnologia Google Text-to-Speech pentru a genera audio de înaltă calitate în multiple limbi. Puteți folosi acest serviciu pentru aplicații de e-learning, asistență vocală, sau orice altă aplicație care necesită conversie text-to-speech. Serviciul este rapid, eficient și oferă suport pentru cache-uire automată, astfel încât requesturile repetate sunt procesate instantaneu.",
+									"description": "Long text to test extended synthesis",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "ro",
+									"description": "Language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Test synthesis with longer Romanian text (>500 characters)"
+					},
+					"response": []
+				}
+			],
+			"description": "Main TTS synthesis endpoints for all supported languages"
+		},
+		{
+			"name": "Error Testing",
+			"item": [
+				{
+					"name": "Empty Text Error",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "",
+									"description": "Empty text to trigger error",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "ro",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Test error handling for empty text (should return 400 Bad Request)"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Language Error",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "Test text",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "invalid_lang",
+									"description": "Invalid language code",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/synthesize",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"synthesize"
+							]
+						},
+						"description": "Test error handling for unsupported language (should return 400 Bad Request)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for testing error handling and validation"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://nn-voice.icefelix.com",
+			"type": "string"
+		}
+	]
+}
