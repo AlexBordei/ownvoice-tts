@@ -14,6 +14,7 @@ from fastapi import FastAPI, HTTPException, Form, UploadFile, File
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from gtts import gTTS
+from pydub import AudioSegment
 import uvicorn
 
 # Configure logging
@@ -56,9 +57,9 @@ LANGUAGES = {
 }
 
 
-def generate_cache_key(text: str, lang: str) -> str:
-    """Generate a unique cache key for text and language"""
-    content = f"{text}_{lang}"
+def generate_cache_key(text: str, lang: str, speed: float = 1.0) -> str:
+    """Generate a unique cache key for text, language, and speed"""
+    content = f"{text}_{lang}_{speed}"
     return hashlib.md5(content.encode()).hexdigest()
 
 
@@ -75,7 +76,8 @@ def get_cached_audio(cache_key: str) -> Optional[Path]:
 async def synthesize(
     text: str = Form(...),
     lang: str = Form(default="ro"),
-    voice: Optional[str] = Form(default=None)
+    voice: Optional[str] = Form(default=None),
+    speed: float = Form(default=1.25)
 ):
     """
     Synthesize text to speech
@@ -84,16 +86,24 @@ async def synthesize(
         text: Text to synthesize
         lang: Language code (ro, en, es, fr, de, it, pt)
         voice: Voice ID (optional, not used with gTTS)
+        speed: Playback speed multiplier (default: 1.25 = 25% faster, range: 0.5-2.0)
 
     Returns:
         Audio file (MP3 format)
     """
     try:
-        logger.info(f"Synthesize request - Text: '{text[:50]}...', Lang: {lang}")
+        logger.info(f"Synthesize request - Text: '{text[:50]}...', Lang: {lang}, Speed: {speed}x")
 
         # Validate text
         if not text or not text.strip():
             raise HTTPException(status_code=400, detail="Text cannot be empty")
+
+        # Validate speed
+        if speed < 0.5 or speed > 2.0:
+            raise HTTPException(
+                status_code=400,
+                detail="Speed must be between 0.5 and 2.0"
+            )
 
         # Normalize language code
         if lang == "ro-f":
@@ -106,8 +116,8 @@ async def synthesize(
                 detail=f"Unsupported language: {lang}. Supported: {', '.join(LANGUAGES.keys())}"
             )
 
-        # Check cache
-        cache_key = generate_cache_key(text, lang)
+        # Check cache (includes speed in cache key)
+        cache_key = generate_cache_key(text, lang, speed)
         cached_audio = get_cached_audio(cache_key)
 
         if cached_audio:
@@ -122,8 +132,36 @@ async def synthesize(
         audio_path = CACHE_DIR / f"{cache_key}.mp3"
 
         logger.info(f"Generating new audio with gTTS...")
-        tts = gTTS(text=text, lang=lang, slow=False)
-        tts.save(str(audio_path))
+
+        # If speed is 1.0, generate directly
+        if abs(speed - 1.0) < 0.01:  # Close to 1.0
+            tts = gTTS(text=text, lang=lang, slow=False)
+            tts.save(str(audio_path))
+        else:
+            # Generate at normal speed first, then adjust
+            temp_path = CACHE_DIR / f"temp_{cache_key}.mp3"
+            tts = gTTS(text=text, lang=lang, slow=False)
+            tts.save(str(temp_path))
+
+            logger.info(f"Adjusting audio speed to {speed}x...")
+            # Load audio and adjust speed
+            audio = AudioSegment.from_mp3(str(temp_path))
+
+            # Speed up audio using speedup method
+            if speed > 1.0:
+                adjusted_audio = audio.speedup(playback_speed=speed)
+            else:
+                # For slower speeds, we need to use a different approach
+                # pydub doesn't have a slowdown method, so we change frame rate
+                adjusted_audio = audio._spawn(audio.raw_data, overrides={
+                    "frame_rate": int(audio.frame_rate * speed)
+                })
+                adjusted_audio = adjusted_audio.set_frame_rate(audio.frame_rate)
+
+            adjusted_audio.export(str(audio_path), format="mp3")
+
+            # Clean up temp file
+            temp_path.unlink()
 
         logger.info(f"Audio generated successfully: {audio_path}")
 
